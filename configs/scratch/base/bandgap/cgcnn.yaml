@@ -1,0 +1,38 @@
+data:
+  root_dir: ./data/benchmark/qmof
+  matid_csv: benchmark
+  override: true
+
+  num_grids: [8, 8, 8]
+  repulsion_distance: 1.0
+
+train:
+  enable_ff: false
+  enable_task: true
+
+  task_name: bandgap
+  msg_routes: ['p2p']
+  readout_node: pn
+
+  max_epochs: 300
+  accumulate_grad_batches: 1
+  precision: 16-mixed
+  batch_size: 16
+  model: cgcnn
+  device: [0]
+  ckpt_path: ~
+
+  log_dir: './lightning_logs/scratch/base/bandgap/cgcnn'
+
+
+# default optimizer
+optimize:
+  type: default
+  lr: 0.001
+  decay_power: "cosine"
+  weight_decay: 0.01
+  warmup_steps: 0.1
+  max_steps: -1
+  optim_type: "adamw"
+  end_lr: 0
+  lr_mult: 1

@@ -1,0 +1,39 @@
+data:
+  root_dir: ./data/benchmark/coremof
+  matid_csv: benchmark
+  override: true
+
+  num_grids: [5, 5, 5]
+  repulsion_distance: 1.0
+
+train:
+  enable_ff: false
+  enable_task: true
+
+  task_name: N2-77-100000
+  msg_routes: ['p2p']
+  head_layers: 5
+  readout_node: pn
+
+  max_epochs: 300
+  accumulate_grad_batches: 4
+  precision: 32
+  batch_size: 4
+  model: dimenet
+  device: [0]
+  ckpt_path: ~
+
+  log_dir: './lightning_logs/scratch/base/n2/dimenet'
+
+
+# default optimizer
+optimize:
+  type: jmp
+  lr: 0.001
+  decay_power: "cosine"
+  weight_decay: 0.0
+  warmup_steps: 3000
+  max_steps: -1
+  optim_type: "adamw"
+  end_lr: 0
+  lr_mult: 1

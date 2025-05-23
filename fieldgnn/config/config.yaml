@@ -1,0 +1,391 @@
+data:
+  root_dir: ./data/benchmark/coremof
+  cif_folder: cif
+  matid_csv: benchmark
+  # train_matid_csv: benchmark.train
+  # val_matid_csv: benchmark.val
+  # test_matid_csv: benchmark.test
+  override: true
+
+  min_lat_len: 8.0
+  max_lat_len: ~
+  max_num_atoms: ~
+
+  pes_min_lat_len: 8
+  num_grids: [8, 8, 8]
+  pes_num_grids: [24, 24, 24]
+  repulsion_distance: 1.0
+
+  num_process: 16
+
+  # folders
+  graph_folder: graph
+  pes_graph_folder: pes_graph
+  grid_folder: grid # save sampled coordinates
+  atomgrid_folder: atomgrid # count number of atoms in the lattice
+  pes_folder: pes
+  pes_tmp_folder: pes_tmp
+
+train:
+  enable_pes: false
+  enable_task: false
+
+  task_name: Nitrogen_77_100000
+  task_type: Regression
+  msg_routes: ['p2p', 'p2v', 'v2v']
+  VNODE_Z: 120
+  readout_node: vn
+  head_layers: 5
+  readout: mean
+  log_contribution: false
+
+  max_epochs: 300
+  accelerator: gpu
+  strategy: ddp_find_unused_parameters_true
+  accumulate_grad_batches: 1
+  precision: 16-mixed
+  log_every_n_steps: 20
+  gradient_clip_val: 1.0
+  batch_size: 32
+  num_workers: 8
+
+  pes_max_energy: 5000
+  pes_min_energy: -5000
+  pes_energy_norm: 5000
+  model: schnet
+  device: [0]
+  log_dir: './lightning_logs'
+  ckpt_path: ~
+
+  pes_loss_alpha: 10
+
+optimize:
+  type: default
+  lr: 0.0001
+  decay_power: "cosine"
+  weight_decay: 0.01
+  warmup_steps: 0.1
+  max_steps: -1
+  optim_type: "adamw"
+  end_lr: 1.0e-7
+  lr_mult: 1
+
+  lr_monitor: val_loss
+  lr_patience: 10
+  lr_factor: 0.8
+  lr_threshold: 1.0e-4
+
+  lr_scheduler:
+    last_step: -1
+    max_epochs: 32
+    max_steps: null
+    min_lr_factor: 0.1
+    name: warmup_cos_rlp
+    rlp:
+      cooldown: 0
+      eps: 1.0e-08
+      factor: 0.8
+      frequency: 1
+      interval: epoch
+      min_lr: 0.0
+      mode: min
+      monitor: null
+      name: rlp
+      patience: 3
+      threshold: 0.0001
+      threshold_mode: rel
+      warmup: null
+    should_restart: false
+    warmup_epochs: 5
+    warmup_start_lr_factor: 0.1
+    warmup_steps: null
+  optimizer:
+    amsgrad: false
+    betas: !!python/tuple
+    - 0.9
+    - 0.95
+    eps: 1.0e-08
+    lr: 8.0e-05
+    name: adamw
+    weight_decay: 0.1
+  # for jmp
+  parameter_specific_optimizers:
+  - lr_scheduler:
+      last_step: -1
+      max_epochs: 32
+      max_steps: null
+      min_lr_factor: 0.33333333333333337
+      name: warmup_cos_rlp
+      rlp:
+        cooldown: 0
+        eps: 1.0e-08
+        factor: 0.8
+        frequency: 1
+        interval: epoch
+        min_lr: 0.0
+        mode: min
+        monitor: null
+        name: rlp
+        patience: 3
+        threshold: 0.0001
+        threshold_mode: rel
+        warmup: null
+      should_restart: false
+      warmup_epochs: 2
+      warmup_start_lr_factor: 0.1
+      warmup_steps: null
+    name: null
+    optimizer:
+      amsgrad: false
+      betas: !!python/tuple
+      - 0.9
+      - 0.95
+      eps: 1.0e-08
+      lr: 2.4e-05
+      name: adamw
+      weight_decay: 0.1
+    paremeter_patterns:
+    - atom_embedding.*
+  - lr_scheduler:
+      last_step: -1
+      max_epochs: 32
+      max_steps: null
+      min_lr_factor: 0.18181818181818182
+      name: warmup_cos_rlp
+      rlp:
+        cooldown: 0
+        eps: 1.0e-08
+        factor: 0.8
+        frequency: 1
+        interval: epoch
+        min_lr: 0.0
+        mode: min
+        monitor: null
+        name: rlp
+        patience: 3
+        threshold: 0.0001
+        threshold_mode: rel
+        warmup: null
+      should_restart: false
+      warmup_epochs: 2
+      warmup_start_lr_factor: 0.1
+      warmup_steps: null
+    name: null
+    optimizer:
+      amsgrad: false
+      betas: !!python/tuple
+      - 0.9
+      - 0.95
+      eps: 1.0e-08
+      lr: 4.4000000000000006e-05
+      name: adamw
+      weight_decay: 0.1
+    paremeter_patterns:
+    - gemnet.int_blocks.0.*
+    - gemnet.out_blocks.1.*
+    - gemnet.out_blocks.0.*
+  - lr_scheduler:
+      last_step: -1
+      max_epochs: 32
+      max_steps: null
+      min_lr_factor: 0.25
+      name: warmup_cos_rlp
+      rlp:
+        cooldown: 0
+        eps: 1.0e-08
+        factor: 0.8
+        frequency: 1
+        interval: epoch
+        min_lr: 0.0
+        mode: min
+        monitor: null
+        name: rlp
+        patience: 3
+        threshold: 0.0001
+        threshold_mode: rel
+        warmup: null
+      should_restart: false
+      warmup_epochs: 2
+      warmup_start_lr_factor: 0.1
+      warmup_steps: null
+    name: null
+    optimizer:
+      amsgrad: false
+      betas: !!python/tuple
+      - 0.9
+      - 0.95
+      eps: 1.0e-08
+      lr: 3.2000000000000005e-05
+      name: adamw
+      weight_decay: 0.1
+    paremeter_patterns:
+    - gemnet.int_blocks.1.*
+    - gemnet.out_blocks.2.*
+  - lr_scheduler:
+      last_step: -1
+      max_epochs: 32
+      max_steps: null
+      min_lr_factor: 0.33333333333333337
+      name: warmup_cos_rlp
+      rlp:
+        cooldown: 0
+        eps: 1.0e-08
+        factor: 0.8
+        frequency: 1
+        interval: epoch
+        min_lr: 0.0
+        mode: min
+        monitor: null
+        name: rlp
+        patience: 3
+        threshold: 0.0001
+        threshold_mode: rel
+        warmup: null
+      should_restart: false
+      warmup_epochs: 2
+      warmup_start_lr_factor: 0.1
+      warmup_steps: null
+    name: null
+    optimizer:
+      amsgrad: false
+      betas: !!python/tuple
+      - 0.9
+      - 0.95
+      eps: 1.0e-08
+      lr: 2.4e-05
+      name: adamw
+      weight_decay: 0.1
+    paremeter_patterns:
+    - gemnet.int_blocks.2.*
+    - gemnet.out_blocks.3.*
+  - lr_scheduler:
+      last_step: -1
+      max_epochs: 32
+      max_steps: null
+      min_lr_factor: 0.25
+      name: warmup_cos_rlp
+      rlp:
+        cooldown: 0
+        eps: 1.0e-08
+        factor: 0.8
+        frequency: 1
+        interval: epoch
+        min_lr: 0.0
+        mode: min
+        monitor: null
+        name: rlp
+        patience: 3
+        threshold: 0.0001
+        threshold_mode: rel
+        warmup: null
+      should_restart: false
+      warmup_epochs: 2
+      warmup_start_lr_factor: 0.1
+      warmup_steps: null
+    name: null
+    optimizer:
+      amsgrad: false
+      betas: !!python/tuple
+      - 0.9
+      - 0.95
+      eps: 1.0e-08
+      lr: 3.2000000000000005e-05
+      name: adamw
+      weight_decay: 0.1
+    paremeter_patterns:
+    - gemnet.int_blocks.3.*
+    - gemnet.out_blocks.4.*
+
+logger:
+  enabled: true
+  log_dir: ./logs
+  filename: fieldgnn.log
+  format: '%(asctime)s - %(levelname)s - %(message)s'
+  level: DEBUG
+
+model:
+  jmp:
+    hid_dim: 256
+    ckpt: ./ckpt/jmp/jmp-s.pt
+
+  schnet:
+    hidden_channels: 128
+    num_filters: 128
+    num_interactions: 6
+    num_gaussians: 50
+    cutoff: 6.0
+    # we use default implementation
+    interaction_graph: ~
+    max_num_neighbors: 32
+    readout: add
+    dipole: false
+    # mean: 0
+    # std: 1
+    atomref: ~
+
+  cgcnn:
+    atom_fea_len: 64
+    nbr_fea_len: 64
+    n_conv: 3
+    gdf_var: 0.2
+    radius: 6
+    max_num_neighbors: 32
+
+  visnet:
+    # lmax: 2
+    # vecnorm_type: ~
+    # trainable_vecnorm: false
+    # num_heads: 8
+    # num_layers: 6
+    # hidden_channels: 256
+    # num_rbf: 32
+    # trainable_rbf: false
+    # # NOTE
+    # max_z: 125
+    # cutoff: 19.0
+    # max_num_neighbors: 20
+    # vertex: false
+    # atomref: ~
+    # reduce_op: sum
+    # # mean: 0
+    # # std: 1
+    # derivative: false
+
+    lmax: 2
+    vecnorm_type: ~
+    trainable_vecnorm: false
+    num_heads: 8
+    num_layers: 4
+    hidden_channels: 128
+    num_rbf: 32
+    trainable_rbf: false
+    max_z: 125
+    cutoff: 6.0
+    max_num_neighbors: 32
+    vertex: false
+    atomref: ~
+    reduce_op: mean
+    # mean: 0
+    # std: 1
+    derivative: false
+
+  dimenet:
+    hidden_channels: 128
+    out_channels: 128
+    num_blocks: 3
+    # num_bilinear: 8
+    num_spherical: 7
+    num_radial: 6
+    cutoff: 6.0
+    max_num_neighbors: 32
+    envelope_exponent: 5
+    num_before_skip: 1
+    num_after_skip: 2
+    num_output_layers: 3
+    act: 'swish'
+    output_initializer: 'glorot_orthogonal'
+    
+    # plusplus
+    int_emb_size: 64
+    basis_emb_size: 8
+    out_emb_channels:  256

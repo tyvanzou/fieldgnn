@@ -1,0 +1,39 @@
+data:
+  root_dir: ./data/benchmark/coremof
+  matid_csv: benchmark
+  override: true
+
+  num_grids: [4, 4, 4]
+  repulsion_distance: 0
+
+train:
+  enable_ff: false
+  enable_task: true
+
+  task_name: N2-77-100000
+  msg_routes: ['p2pv']
+  readout_node: vn
+  log_contribution: false
+
+  max_epochs: 60
+  accumulate_grad_batches: 1
+  precision: 16-mixed
+  batch_size: 16
+  model: schnet
+  device: [0]
+  ckpt_path: ~
+
+  log_dir: './lightning_logs/ablation/grid/grid4/schnet'
+
+
+# default optimizer
+optimize:
+  type: default
+  lr: 0.001
+  decay_power: "cosine"
+  weight_decay: 0.01
+  warmup_steps: 0.1
+  max_steps: -1
+  optim_type: "adamw"
+  end_lr: 0
+  lr_mult: 1

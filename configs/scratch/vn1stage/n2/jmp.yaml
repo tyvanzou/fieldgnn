@@ -1,0 +1,30 @@
+data:
+  root_dir: ./data/benchmark/coremof
+  matid_csv: benchmark
+  override: true
+
+  num_grids: [8, 8, 8]
+  repulsion_distance: 0
+
+train:
+  enable_pes: false
+  enable_task: true
+
+  task_name: N2-77-100000
+  msg_routes: ['p2pv']
+  readout_node: vn
+
+  max_epochs: 300
+  accumulate_grad_batches: 1
+  precision: 16-mixed
+  batch_size: 2
+  model: jmp
+  device: [2, 3]
+  ckpt_path: ~
+
+  log_dir: ./lightning_logs/scratch/vn1stage/n2/jmp
+
+
+# default optimizer
+optimize:
+  type: jmp

@@ -1,0 +1,25 @@
+data:
+  root_dir: ./data/benchmark/coremof
+  matid_csv: benchmark
+  override: true
+
+train:
+  enable_ff: false
+  enable_task: true
+
+  task_name: N2-77-100000
+  msg_routes: ['p2p']
+  readout_node: pn
+
+  max_epochs: 300
+  accumulate_grad_batches: 1
+  precision: 16-mixed
+  batch_size: 16
+  model: schnet
+  device: [0]
+  ckpt_path: ~
+
+  log_dir: ./lightning_logs/scratch/base/schnet
+
+
+# default optimizer

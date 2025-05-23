@@ -1,0 +1,1 @@
+python -m fieldgnn.data.build_graph --config $1

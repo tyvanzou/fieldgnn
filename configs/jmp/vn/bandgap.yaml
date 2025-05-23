@@ -1,0 +1,31 @@
+data:
+  root_dir: ./data/benchmark/qmof
+  matid_csv: benchmark
+  override: false
+
+  num_grids: [8, 8, 8]
+  pes_num_grids: [8, 8, 8]
+  repulsion_distance: 0.0
+
+train:
+  enable_pes: false
+  enable_task: true
+
+  task_name: bandgap
+  msg_routes: ['p2pv']
+  readout_node: vn
+
+  max_epochs: 30
+  accumulate_grad_batches: 1
+  precision: 16-mixed
+  batch_size: 2
+  model: jmp
+  device: [5, 6, 7]
+  ckpt_path: ~
+
+  log_dir: ./lightning_logs/jmp/vn/bandgap/jmp
+
+
+# default optimizer
+optimize:
+  type: jmp

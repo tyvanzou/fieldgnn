@@ -1,0 +1,41 @@
+data:
+  root_dir: ./data/benchmark/zeolite
+  matid_csv: benchmark
+  override: true
+
+  num_grids: [8, 8, 8]
+  repulsion_distance: 1.0
+
+train:
+  enable_ff: false
+  enable_task: true
+
+  task_name: heat_of_adsorption
+  msg_routes: ['p2p']
+  head_layers: 5
+  readout_node: pn
+
+  max_epochs: 100
+  accumulate_grad_batches: 2
+  precision: 32
+  batch_size: 8
+  model: dimenet
+  device: [4]
+  ckpt_path: ~
+
+  log_dir: './lightning_logs/baseline/zeolite/dimenet'
+
+
+# default optimizer
+optimize:
+  type: reduce_on_plateau
+  lr: 0.0007
+  lr_patience: 10
+  lr_factor: 0.8
+  decay_power: "cosine"
+  weight_decay: 0.01
+  warmup_steps: 0.02
+  max_steps: -1
+  optim_type: "adamw"
+  end_lr: 1.0e-7
+  lr_mult: 1
